@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="executive">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IMovie Executive Dashboard | December 2025 Marketing Strategy</title>
+
+    <!-- Premium Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <style>
+        /* Critical loading styles */
+        .executive-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            color: white;
+            text-align: center;
+            transition: opacity 0.5s ease;
+        }
+
+        .executive-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top-color: #3b82f6;
+            animation: executive-spin 1s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+
+        @keyframes executive-spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Toast notifications */
+        .executive-toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 10000;
+            animation: slideInRight 0.3s ease-out;
+            max-width: 400px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .executive-toast.success {
+            background: #10b981;
+            color: white;
+        }
+
+        .executive-toast.error {
+            background: #ef4444;
+            color: white;
+        }
+
+        .executive-toast.warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .executive-toast.info {
+            background: #3b82f6;
+            color: white;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+
+        /* Modal styles */
+        .executive-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            max-width: 800px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideInUp 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        @keyframes slideInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Executive Loading Screen -->
+    <div class="executive-loading" id="loadingScreen">
+        <div class="loading-content">
+            <div class="executive-spinner"></div>
+            <h3 style="margin-bottom: 10px; font-weight: 600;">IMovie Executive Dashboard</h3>
+            <p style="opacity: 0.8; font-size: 14px;">Loading December 2025 Marketing Insights...</p>
+        </div>
+    </div>
+
+    <!-- Executive Header -->
+    <header class="executive-header">
+        <div class="header-container">
+            <div class="brand-section">
+                <div class="logo">
+                    <i class="fas fa-film"></i>
+                    <div class="logo-text">
+                        <h1>IMovie <span class="logo-pro">Executive</span></h1>
+                        <p class="logo-subtitle">Marketing Strategy Dashboard</p>
+                    </div>
+                </div>
+                <div class="header-tag">
+                    <span class="tag december">December 2025 Focus</span>
+                    <span class="tag strategy">Q4 Marketing Strategy</span>
+                </div>
+            </div>
+
+            <div class="executive-controls">
+                <div class="date-display">
+                    <i class="far fa-calendar-alt"></i>
+                    <div class="date-info">
+                        <span class="current-date" id="currentDate"></span>
+                        <span class="report-period">Report Period: Dec 2025</span>
+                    </div>
+                </div>
+
+                <div class="executive-actions">
+                    <button class="executive-btn refresh" id="refreshBtn">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Refresh</span>
+                    </button>
+                    <button class="executive-btn export" id="exportReportBtn">
+                        <i class="fas fa-file-pdf"></i>
+                        <span>Export PDF</span>
+                    </button>
+                    <button class="executive-btn presentation" id="presentationBtn">
+                        <i class="fas fa-presentation"></i>
+                        <span>Presentation</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Executive Navigation -->
+    <nav class="executive-nav">
+        <div class="nav-container">
+            <ul class="nav-menu">
+                <li class="nav-item active">
+                    <a href="#dashboard">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#performance">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Performance</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#insights">
+                        <i class="fas fa-lightbulb"></i>
+                        <span>Insights</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#strategy">
+                        <i class="fas fa-chess-board"></i>
+                        <span>Strategy</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#reports">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Reports</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#upload">
+                        <i class="fas fa-upload"></i>
+                        <span>Upload Data</span>
+                    </a>
+                </li>
+            </ul>
+
+            <div class="nav-stats">
+                <div class="stat-badge">
+                    <i class="fas fa-database"></i>
+                    <span><strong id="dataCount">0</strong> Records</span>
+                </div>
+                <div class="stat-badge">
+                    <i class="fas fa-clock"></i>
+                    <span>Updated: <strong id="lastUpdate">Just now</strong></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Executive Dashboard Container -->
+    <main class="executive-dashboard">
+        <!-- Data Upload Section -->
+        <section class="data-upload-section" id="upload">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    Upload Your Dataset
+                    <span class="section-subtitle">Upload custom CSV file for analysis</span>
+                </h2>
+            </div>
+
+            <div class="upload-container">
+                <div class="upload-card">
+                    <div class="upload-header">
+                        <i class="fas fa-file-csv"></i>
+                        <h3>Upload CSV File</h3>
+                        <p>Upload your IMovie dataset for custom analysis</p>
+                    </div>
+
+                    <div class="upload-area" id="dropZone">
+                        <div class="upload-icon">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                        </div>
+                        <div class="upload-text">
+                            <h4>Drag & Drop your CSV file here</h4>
+                            <p>or click to browse</p>
+                            <p class="upload-note">Supported format: CSV (Comma Separated Values)</p>
+                        </div>
+                        <input type="file" id="fileUpload" accept=".csv" style="display: none;">
+                    </div>
+
+                    <div class="upload-controls">
+                        <button class="upload-btn" id="browseBtn">
+                            <i class="fas fa-folder-open"></i>
+                            Browse Files
+                        </button>
+                        <button class="upload-btn secondary" id="sampleDataBtn">
+                            <i class="fas fa-download"></i>
+                            Download Sample CSV
+                        </button>
+                    </div>
+
+                    <div class="upload-info">
+                        <h4><i class="fas fa-info-circle"></i> CSV Format Requirements</h4>
+                        <ul>
+                            <li>Required columns: <strong>Film Name</strong>, <strong>Category</strong>,
+                                <strong>Language</strong>, <strong>Rating</strong>, <strong>Views</strong>
+                            </li>
+                            <li>Optional columns: Date, Performance, Description, etc.</li>
+                            <li>Rating: 1-5 scale (decimal values allowed)</li>
+                            <li>Views: Numeric value (supports K, M suffixes)</li>
+                            <li>First row should contain column headers</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="preview-card">
+                    <div class="preview-header">
+                        <h3><i class="fas fa-table"></i> Data Preview</h3>
+                        <div class="preview-stats">
+                            <span id="previewCount">0 records</span>
+                            <span id="previewStatus">No file uploaded</span>
+                        </div>
+                    </div>
+
+                    <div class="preview-table">
+                        <table>
+                            <thead id="previewHeader">
+                                <tr>
+                                    <th>Film Name</th>
+                                    <th>Category</th>
+                                    <th>Language</th>
+                                    <th>Rating</th>
+                                    <th>Views</th>
+                                </tr>
+                            </thead>
+                            <tbody id="previewBody">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; padding: 2rem; color: #6b7280;">
+                                        <i class="fas fa-database"></i>
+                                        <p>Upload a CSV file to preview data</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="preview-actions">
+                        <button class="preview-btn analyze-btn" id="analyzeDataBtn" disabled>
+                            <i class="fas fa-chart-line"></i>
+                            Analyze This Dataset
+                        </button>
+                        <button class="preview-btn clear-btn" id="clearDataBtn">
+                            <i class="fas fa-trash"></i>
+                            Clear Data
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 1: Executive Summary -->
+        <section class="executive-summary" id="dashboard">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-pie"></i>
+                    Executive Summary
+                    <span class="section-subtitle">December 2025 Marketing Overview</span>
+                </h2>
+                <div class="timeframe-selector">
+                    <select class="executive-select" id="timeframeSelect">
+                        <option value="dec2025">December 2025</option>
+                        <option value="q4">Q4 2025</option>
+                        <option value="full2025">Full Year 2025</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Premium KPI Cards -->
+            <div class="kpi-grid-executive">
+                <!-- Total Performance -->
+                <div class="kpi-card-executive performance">
+                    <div class="kpi-header">
+                        <div class="kpi-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="kpi-trend">
+                            <span class="trend-badge positive" id="trendBadge">+0%</span>
+                            <span class="trend-text">vs last month</span>
+                        </div>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-value" id="totalViewsKPI">0</div>
+                        <div class="kpi-label">Total Viewership</div>
+                        <div class="kpi-progress">
+                            <div class="progress-track">
+                                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                            </div>
+                            <span class="progress-text" id="progressText">0% of target achieved</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- December Performance -->
+                <div class="kpi-card-executive december-highlight">
+                    <div class="kpi-header">
+                        <div class="kpi-icon">
+                            <i class="fas fa-snowflake"></i>
+                        </div>
+                        <div class="kpi-badge">
+                            <span class="period-badge">DEC 2025</span>
+                        </div>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-value" id="decPerformanceKPI">0%</div>
+                        <div class="kpi-label">Performance Index</div>
+                        <div class="kpi-comparison">
+                            <div class="comparison-item">
+                                <i class="fas fa-arrow-up"></i>
+                                <span id="comparisonText">Loading...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audience Engagement -->
+                <div class="kpi-card-executive engagement">
+                    <div class="kpi-header">
+                        <div class="kpi-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="kpi-trend">
+                            <span class="trend-badge positive">+0%</span>
+                            <span class="trend-text">engagement rate</span>
+                        </div>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-value" id="avgRatingKPI">0.0</div>
+                        <div class="kpi-label">Avg. Viewer Rating</div>
+                        <div class="kpi-sparkline" id="ratingSparkline">
+                            <!-- Sparkline will be added via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Performance -->
+                <div class="kpi-card-executive content">
+                    <div class="kpi-header">
+                        <div class="kpi-icon">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <div class="kpi-stats">
+                            <span class="stat-label">Top Category</span>
+                        </div>
+                    </div>
+                    <div class="kpi-content">
+                        <div class="kpi-value" id="topCategoryKPI">--</div>
+                        <div class="kpi-label">Highest Performing</div>
+                        <div class="kpi-detail" id="categoryPerformanceKPI">
+                            <span class="detail-value">--</span>
+                            <span class="detail-label">of total views</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Strategic Visualizations -->
+        <section class="strategic-visualizations" id="performance">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-network"></i>
+                    Strategic Visualizations
+                    <span class="section-subtitle">Data-driven insights for decision making</span>
+                </h2>
+                <div class="viz-controls">
+                    <button class="viz-control-btn active" data-viz="category">
+                        <i class="fas fa-layer-group"></i>
+                        Category
+                    </button>
+                    <button class="viz-control-btn" data-viz="language">
+                        <i class="fas fa-language"></i>
+                        Language
+                    </button>
+                    <button class="viz-control-btn" data-viz="trend">
+                        <i class="fas fa-trend-up"></i>
+                        Trend
+                    </button>
+                    <button class="viz-control-btn" data-viz="comparison">
+                        <i class="fas fa-balance-scale"></i>
+                        Comparison
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main Visualization Area -->
+            <div class="viz-main-area">
+                <!-- Left: Primary Chart -->
+                <div class="viz-primary">
+                    <div class="viz-card">
+                        <div class="viz-header">
+                            <h3>Category Performance Analysis</h3>
+                            <div class="viz-legend" id="categoryLegend"></div>
+                        </div>
+                        <div class="viz-container">
+                            <canvas id="primaryChart"></canvas>
+                        </div>
+                        <div class="viz-insight">
+                            <i class="fas fa-lightbulb"></i>
+                            <span id="primaryInsight">Upload data to see insights</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right: Secondary Charts -->
+                <div class="viz-secondary">
+                    <div class="viz-mini-card">
+                        <div class="mini-header">
+                            <h4>Language Distribution</h4>
+                            <span class="mini-value" id="topLanguageValue">--</span>
+                        </div>
+                        <div class="mini-container">
+                            <canvas id="languageChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="viz-mini-card">
+                        <div class="mini-header">
+                            <h4>December vs Average</h4>
+                            <span class="mini-value" id="decComparisonValue">0%</span>
+                        </div>
+                        <div class="mini-container">
+                            <canvas id="comparisonChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="viz-mini-card">
+                        <div class="mini-header">
+                            <h4>Rating Distribution</h4>
+                            <span class="mini-value" id="avgRatingValue">0.0</span>
+                        </div>
+                        <div class="mini-container">
+                            <canvas id="ratingChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="viz-mini-card">
+                        <div class="mini-header">
+                            <h4>Monthly Trend</h4>
+                            <span class="mini-value" id="trendValue">0%</span>
+                        </div>
+                        <div class="mini-container">
+                            <canvas id="trendChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Data Filter Panel -->
+            <div class="filter-panel">
+                <div class="filter-header">
+                    <h4><i class="fas fa-filter"></i> Data Filters</h4>
+                    <button class="filter-clear" id="clearFilters">Clear All</button>
+                </div>
+                <div class="filter-grid">
+                    <div class="filter-group">
+                        <label>Categories</label>
+                        <div class="filter-options" id="categoryFilters">
+                            <!-- Will be populated by JS -->
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label>Languages</label>
+                        <div class="filter-options" id="languageFilters">
+                            <!-- Will be populated by JS -->
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label>Rating Range</label>
+                        <div class="range-slider">
+                            <input type="range" id="ratingRange" min="0" max="5" step="0.1" value="0">
+                            <div class="range-values">
+                                <span>Min: <span id="ratingMin">0.0</span></span>
+                                <span>Max: <span id="ratingMax">5.0</span></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <label>View Threshold</label>
+                        <div class="threshold-input">
+                            <input type="number" id="viewsThreshold" value="0" placeholder="Min views">
+                            <span class="input-suffix">views</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Strategic Insights -->
+        <section class="strategic-insights" id="insights">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-brain"></i>
+                    Strategic Insights
+                    <span class="section-subtitle">AI-powered recommendations for December 2025</span>
+                </h2>
+                <button class="insight-generate" id="generateInsightsBtn">
+                    <i class="fas fa-robot"></i>
+                    Generate New Insights
+                </button>
+            </div>
+
+            <div class="insights-grid">
+                <!-- Insight Card 1: Strategic Focus -->
+                <div class="insight-card strategic">
+                    <div class="insight-header">
+                        <div class="insight-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <div class="insight-confidence">
+                            <span class="confidence-level high">92% Confidence</span>
+                        </div>
+                    </div>
+                    <div class="insight-content">
+                        <h3>Strategic Focus Area</h3>
+                        <p id="strategicInsight">Upload data to generate strategic insights</p>
+                        <div class="insight-metrics">
+                            <div class="metric-item">
+                                <i class="fas fa-arrow-up"></i>
+                                <div class="metric-value" id="metricEngagement">0%</div>
+                                <div class="metric-label">Engagement</div>
+                            </div>
+                            <div class="metric-item">
+                                <i class="fas fa-users"></i>
+                                <div class="metric-value" id="metricReach">0</div>
+                                <div class="metric-label">Potential Reach</div>
+                            </div>
+                            <div class="metric-item">
+                                <i class="fas fa-calendar-alt"></i>
+                                <div class="metric-value" id="metricPeriod">Dec</div>
+                                <div class="metric-label">Peak Period</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="insight-actions">
+                        <button class="action-btn implement">
+                            <i class="fas fa-play-circle"></i>
+                            Implement
+                        </button>
+                        <button class="action-btn schedule">
+                            <i class="fas fa-calendar-plus"></i>
+                            Schedule
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Insight Card 2: Tactical Recommendation -->
+                <div class="insight-card tactical">
+                    <div class="insight-header">
+                        <div class="insight-icon">
+                            <i class="fas fa-chess-knight"></i>
+                        </div>
+                        <div class="insight-confidence">
+                            <span class="confidence-level medium">78% Confidence</span>
+                        </div>
+                    </div>
+                    <div class="insight-content">
+                        <h3>Tactical Recommendation</h3>
+                        <p id="tacticalInsight">Upload data to generate tactical recommendations</p>
+                        <div class="insight-timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">Dec 1-7</div>
+                                    <div class="timeline-task">Promotion Phase 1</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">Dec 8-14</div>
+                                    <div class="timeline-task">Launch Campaign</div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-marker"></div>
+                                <div class="timeline-content">
+                                    <div class="timeline-date">Dec 15-31</div>
+                                    <div class="timeline-task">Peak Engagement</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Insight Card 3: Predictive Forecast -->
+                <div class="insight-card predictive">
+                    <div class="insight-header">
+                        <div class="insight-icon">
+                            <i class="fas fa-crystal-ball"></i>
+                        </div>
+                        <div class="insight-confidence">
+                            <span class="confidence-level high">88% Confidence</span>
+                        </div>
+                    </div>
+                    <div class="insight-content">
+                        <h3>Predictive Forecast</h3>
+                        <p id="predictiveInsight">Upload data to generate predictive forecast</p>
+                        <div class="prediction-chart">
+                            <canvas id="predictionChart"></canvas>
+                        </div>
+                        <div class="prediction-stats">
+                            <div class="prediction-item">
+                                <span class="prediction-label">Expected Growth</span>
+                                <span class="prediction-value positive" id="predictionGrowth">0%</span>
+                            </div>
+                            <div class="prediction-item">
+                                <span class="prediction-label">Peak Days</span>
+                                <span class="prediction-value" id="predictionPeak">Dec</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Data Explorer -->
+        <section class="data-explorer" id="reports">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-table"></i>
+                    Data Explorer
+                    <span class="section-subtitle">Detailed analysis and reporting</span>
+                </h2>
+                <div class="explorer-controls">
+                    <div class="search-box-executive">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="dataSearch" placeholder="Search films, categories, languages...">
+                    </div>
+                    <div class="control-group">
+                        <select class="executive-select" id="dataSort">
+                            <option value="rating-desc">Rating (High to Low)</option>
+                            <option value="views-desc">Views (High to Low)</option>
+                            <option value="name-asc">Name (A to Z)</option>
+                            <option value="date-desc">Date (Newest)</option>
+                        </select>
+                        <button class="executive-btn export-data" id="exportDataBtn">
+                            <i class="fas fa-download"></i>
+                            Export CSV
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-table-executive">
+                <div class="table-header">
+                    <div class="table-stats">
+                        Showing <strong id="filteredCount">0</strong> of <strong id="totalCount">0</strong> records
+                    </div>
+                    <div class="table-actions">
+                        <button class="table-action" id="selectAllBtn">
+                            <i class="far fa-square"></i>
+                            Select All
+                        </button>
+                        <button class="table-action" id="deselectAllBtn">
+                            <i class="fas fa-square"></i>
+                            Deselect All
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="select-column">
+                                    <input type="checkbox" id="masterCheckbox">
+                                </th>
+                                <th>Film Name</th>
+                                <th>Category</th>
+                                <th>Language</th>
+                                <th>Rating</th>
+                                <th>Views</th>
+                                <th>Performance</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataTableBody">
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 2rem;">
+                                    <div class="loading-table">
+                                        <i class="fas fa-upload"></i>
+                                        <p>Upload a CSV file to explore data</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-footer">
+                    <div class="pagination-executive">
+                        <button class="pagination-btn prev" id="prevPage" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <div class="page-info">
+                            Page <span id="currentPage">1</span> of <span id="totalPages">1</span>
+                        </div>
+                        <button class="pagination-btn next" id="nextPage" disabled>
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                        <select class="page-size-select" id="pageSize">
+                            <option value="10">10 per page</option>
+                            <option value="25" selected>25 per page</option>
+                            <option value="50">50 per page</option>
+                            <option value="100">100 per page</option>
+                        </select>
+                    </div>
+                    <div class="footer-actions">
+                        <button class="action-btn compare" id="compareBtn" disabled>
+                            <i class="fas fa-chart-bar"></i>
+                            Compare Selected
+                        </button>
+                        <button class="action-btn analyze" id="analyzeBtn" disabled>
+                            <i class="fas fa-chart-line"></i>
+                            Analyze
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Action Plan -->
+        <section class="action-plan" id="strategy">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="fas fa-tasks"></i>
+                    December 2025 Action Plan
+                    <span class="section-subtitle">Strategic roadmap for marketing success</span>
+                </h2>
+                <div class="plan-progress">
+                    <div class="progress-display">
+                        <div class="circular-progress" id="circularProgress" data-progress="25">
+                            <span id="progressPercent">25%</span>
+                        </div>
+                        <div class="progress-info">
+                            <div class="progress-value" id="progressValue">25% Complete</div>
+                            <div class="progress-status" id="progressStatus">On Track</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-timeline">
+                <!-- Phase 1: Planning -->
+                <div class="timeline-phase">
+                    <div class="phase-header">
+                        <div class="phase-marker">1</div>
+                        <div class="phase-info">
+                            <h3>Planning Phase</h3>
+                            <p class="phase-period">November 1-15, 2025</p>
+                        </div>
+                        <span class="phase-status completed">Completed</span>
+                    </div>
+                    <div class="phase-tasks">
+                        <div class="task-item completed">
+                            <div class="task-check">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="task-content">
+                                <h4>Content Strategy Finalization</h4>
+                                <p>Select and license holiday-themed films for exclusive December release</p>
+                                <div class="task-meta">
+                                    <span><i class="fas fa-user"></i> John Doe</span>
+                                    <span><i class="fas fa-calendar"></i> Due Nov 15</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-item in-progress">
+                            <div class="task-check">
+                                <div class="check-circle"></div>
+                            </div>
+                            <div class="task-content">
+                                <h4>Budget Allocation</h4>
+                                <p>Allocate marketing budget across channels and campaigns</p>
+                                <div class="task-meta">
+                                    <span><i class="fas fa-user"></i> Jane Smith</span>
+                                    <span><i class="fas fa-calendar"></i> Due Nov 20</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 2: Preparation -->
+                <div class="timeline-phase">
+                    <div class="phase-header">
+                        <div class="phase-marker">2</div>
+                        <div class="phase-info">
+                            <h3>Preparation Phase</h3>
+                            <p class="phase-period">November 16-30, 2025</p>
+                        </div>
+                        <span class="phase-status in-progress">In Progress</span>
+                    </div>
+                    <div class="phase-tasks">
+                        <div class="task-item pending">
+                            <div class="task-check">
+                                <div class="check-circle"></div>
+                            </div>
+                            <div class="task-content">
+                                <h4>Localization Planning</h4>
+                                <p>Prepare Tamil and Hindi dubs for top December releases</p>
+                                <div class="task-meta">
+                                    <span><i class="fas fa-user"></i> Localization Team</span>
+                                    <span><i class="fas fa-calendar"></i> Due Nov 25</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-item pending">
+                            <div class="task-check">
+                                <div class="check-circle"></div>
+                            </div>
+                            <div class="task-content">
+                                <h4>Promotional Material Creation</h4>
+                                <p>Design banners, trailers, and social media content</p>
+                                <div class="task-meta">
+                                    <span><i class="fas fa-user"></i> Creative Team</span>
+                                    <span><i class="fas fa-calendar"></i> Due Nov 30</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phase 3: Execution -->
+                <div class="timeline-phase">
+                    <div class="phase-header">
+                        <div class="phase-marker">3</div>
+                        <div class="phase-info">
+                            <h3>Execution Phase</h3>
+                            <p class="phase-period">December 1-31, 2025</p>
+                        </div>
+                        <span class="phase-status pending">Pending</span>
+                    </div>
+                    <div class="phase-tasks">
+                        <div class="task-item pending">
+                            <div class="task-check">
+                                <div class="check-circle"></div>
+                            </div>
+                            <div class="task-content">
+                                <h4>Campaign Launch</h4>
+                                <p>Launch multi-channel marketing campaign</p>
+                                <div class="task-meta">
+                                    <span><i class="fas fa-user"></i> Marketing Team</span>
+                                    <span><i class="fas fa-calendar"></i> Due Dec 1</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="task-item pending">
+                            <div class="task-check">
+                                <div class="check-circle"></div>
+                            </div>
+                            <div class="task-content">
+                                <h4>Performance Monitoring</h4>
+                                <p>Real-time tracking and optimization of campaigns</p>
+                                <div class="task-meta">
+                                    <span><i class="fas fa-user"></i> Analytics Team</span>
+                                    <span><i class="fas fa-calendar"></i> Ongoing</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Executive Footer -->
+    <footer class="executive-footer">
+        <div class="footer-container">
+            <div class="footer-info">
+                <div class="footer-brand">
+                    <i class="fas fa-film"></i>
+                    <div class="footer-text">
+                        <h4>IMovie Executive Dashboard</h4>
+                        <p>December 2025 Marketing Strategy v2.1</p>
+                    </div>
+                </div>
+                <div class="footer-details">
+                    <p><i class="fas fa-shield-alt"></i> Confidential & Proprietary</p>
+                    <p><i class="fas fa-calendar-alt"></i> Generated: <span id="reportDate"></span></p>
+                </div>
+            </div>
+
+            <div class="footer-actions">
+                <button class="footer-btn" id="printBtn">
+                    <i class="fas fa-print"></i>
+                    Print Report
+                </button>
+                <button class="footer-btn" id="shareBtn">
+                    <i class="fas fa-share-alt"></i>
+                    Share
+                </button>
+                <button class="footer-btn" id="feedbackBtn">
+                    <i class="fas fa-comment-alt"></i>
+                    Feedback
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="js/dashboard.js"></script>
+
+    <script>
+        // Ensure file structure exists
+        document.addEventListener('DOMContentLoaded', function () {
+            // Set current date
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
+            document.getElementById('reportDate').textContent = now.toLocaleDateString('en-US');
+
+            // Hide loading screen after 1.5 seconds
+            setTimeout(() => {
+                document.getElementById('loadingScreen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loadingScreen').style.display = 'none';
+                }, 500);
+            }, 1500);
+        });
+    </script>
+</body>
+
+</html>
